@@ -1,35 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getJobs, deleteJob } from '../api';
-import moment from 'moment'; // For easy date formatting
+import moment from 'moment'; 
 
 const JobList = () => {
     const [jobs, setJobs] = useState([]);
-    const [filterStatus, setFilterStatus] = useState(''); // State for filter dropdown
+    const [filterStatus, setFilterStatus] = useState(''); 
     const [error, setError] = useState('');
 
-    // Function to fetch jobs from the API
+    
     const fetchJobs = async () => {
-        setError(''); // Clear previous errors
+        setError(''); 
         try {
-            const res = await getJobs(filterStatus); // Pass filter status to API call
+            const res = await getJobs(filterStatus); 
             setJobs(res.data);
         } catch (err) {
             setError(err.response?.data?.msg || 'Failed to fetch job applications.');
         }
     };
 
-    // Fetch jobs on component mount and when filterStatus changes
+    
     useEffect(() => {
         fetchJobs();
     }, [filterStatus]);
 
-    // Handle job deletion
+    
     const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to delete this job application?')) {
             try {
                 await deleteJob(id);
-                fetchJobs(); // Refresh the list after deletion
+                fetchJobs(); 
             } catch (err) {
                 setError(err.response?.data?.msg || 'Failed to delete job application.');
             }
